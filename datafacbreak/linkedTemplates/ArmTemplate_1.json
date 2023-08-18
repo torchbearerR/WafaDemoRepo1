@@ -29,6 +29,62 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/Filterpayrollemployees')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DelimitedText3",
+								"type": "DatasetReference"
+							},
+							"name": "Employees"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DelimitedText2",
+								"type": "DatasetReference"
+							},
+							"name": "payrollemployeessink"
+						}
+					],
+					"transformations": [
+						{
+							"name": "filterpayrolldept"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          empid as string,",
+						"          name as string,",
+						"          country as string,",
+						"          {department } as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> Employees",
+						"Employees filter(equals({department },'3')) ~> filterpayrolldept",
+						"filterpayrolldept sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          deptid as string,",
+						"          { depname} as string",
+						"     ),",
+						"     partitionFileNames:['PayrollEmp.csv'],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> payrollemployeessink"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/aggregatedataflow')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
@@ -204,7 +260,9 @@
 				"annotations": [],
 				"lastPublishTime": "2023-08-16T09:50:43Z"
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/Filterpayrollemployees')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/Eventtrigger1')]",

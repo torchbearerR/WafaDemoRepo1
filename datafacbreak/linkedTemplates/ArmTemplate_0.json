@@ -442,6 +442,51 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/RakzDataset')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "emp.csv",
+						"container": "dataflowcontainer"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "empid",
+						"type": "String"
+					},
+					{
+						"name": "name",
+						"type": "String"
+					},
+					{
+						"name": " country",
+						"type": "String"
+					},
+					{
+						"name": " department",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage2')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/deptdataset')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -666,65 +711,6 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/Binary1')]",
 				"[concat(variables('factoryId'), '/datasets/Binary2output')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Filterpayrollemployees')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "DelimitedText3",
-								"type": "DatasetReference"
-							},
-							"name": "Employees"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "DelimitedText2",
-								"type": "DatasetReference"
-							},
-							"name": "payrollemployeessink"
-						}
-					],
-					"transformations": [
-						{
-							"name": "filterpayrolldept"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          empid as string,",
-						"          name as string,",
-						"          country as string,",
-						"          {department } as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> Employees",
-						"Employees filter(equals({department },'3')) ~> filterpayrolldept",
-						"filterpayrolldept sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     input(",
-						"          deptid as string,",
-						"          { depname} as string",
-						"     ),",
-						"     partitionFileNames:['PayrollEmp.csv'],",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     partitionBy('hash', 1)) ~> payrollemployeessink"
-					]
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DelimitedText3')]",
-				"[concat(variables('factoryId'), '/datasets/DelimitedText2')]"
 			]
 		}
 	]
