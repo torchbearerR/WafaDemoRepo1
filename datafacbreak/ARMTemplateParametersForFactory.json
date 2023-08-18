@@ -1,0 +1,30 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "datafacbreak"
+		},
+		"AzureBlobStorage1_connectionString": {
+			"value": ""
+		},
+		"AzureBlobStorage2_connectionString": {
+			"value": ""
+		},
+		"SqlServer1_connectionString": {
+			"value": "Integrated Security=False;Data Source=@{linkedService().servername};Initial Catalog=@{linkedService().dbname};User ID=@{linkedService().username};Password=@{linkedService().password}"
+		},
+		"Eventtrigger1_properties_typeProperties_scope": {
+			"value": "/subscriptions/e9e06453-b50e-49ad-9059-26fc9c01b7ba/resourceGroups/pestrresgrp/providers/Microsoft.Storage/storageAccounts/straccbreakpractice"
+		},
+		"schtrigger_parampipeline_properties_demopipeline2_parameters_sourcetable": {
+			"value": "Table1"
+		},
+		"schtrigger_parampipeline_properties_demopipeline2_parameters_dbnamefrompipeline": {
+			"value": "testdb"
+		},
+		"schtrigger_parampipeline_properties_demopipeline2_parameters_destinationtable": {
+			"value": "Table2"
+		}
+	}
+}
