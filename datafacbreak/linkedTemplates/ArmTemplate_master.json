@@ -1,0 +1,112 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "datafacbreak"
+		},
+		"AzureBlobStorage1_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage1'"
+		},
+		"AzureBlobStorage2_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage2'"
+		},
+		"SqlServer1_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'SqlServer1'",
+			"defaultValue": "Integrated Security=False;Data Source=@{linkedService().servername};Initial Catalog=@{linkedService().dbname};User ID=@{linkedService().username};Password=@{linkedService().password}"
+		},
+		"Eventtrigger1_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/e9e06453-b50e-49ad-9059-26fc9c01b7ba/resourceGroups/pestrresgrp/providers/Microsoft.Storage/storageAccounts/straccbreakpractice"
+		},
+		"schtrigger_parampipeline_properties_demopipeline2_parameters_sourcetable": {
+			"type": "string",
+			"defaultValue": "Table1"
+		},
+		"schtrigger_parampipeline_properties_demopipeline2_parameters_dbnamefrompipeline": {
+			"type": "string",
+			"defaultValue": "testdb"
+		},
+		"schtrigger_parampipeline_properties_demopipeline2_parameters_destinationtable": {
+			"type": "string",
+			"defaultValue": "Table2"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "datafacbreak_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"AzureBlobStorage1_connectionString": {
+						"value": "[parameters('AzureBlobStorage1_connectionString')]"
+					},
+					"AzureBlobStorage2_connectionString": {
+						"value": "[parameters('AzureBlobStorage2_connectionString')]"
+					},
+					"SqlServer1_connectionString": {
+						"value": "[parameters('SqlServer1_connectionString')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "datafacbreak_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"Eventtrigger1_properties_typeProperties_scope": {
+						"value": "[parameters('Eventtrigger1_properties_typeProperties_scope')]"
+					},
+					"schtrigger_parampipeline_properties_demopipeline2_parameters_sourcetable": {
+						"value": "[parameters('schtrigger_parampipeline_properties_demopipeline2_parameters_sourcetable')]"
+					},
+					"schtrigger_parampipeline_properties_demopipeline2_parameters_dbnamefrompipeline": {
+						"value": "[parameters('schtrigger_parampipeline_properties_demopipeline2_parameters_dbnamefrompipeline')]"
+					},
+					"schtrigger_parampipeline_properties_demopipeline2_parameters_destinationtable": {
+						"value": "[parameters('schtrigger_parampipeline_properties_demopipeline2_parameters_destinationtable')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'datafacbreak_ArmTemplate_0')]"
+			]
+		}
+	]
+}
