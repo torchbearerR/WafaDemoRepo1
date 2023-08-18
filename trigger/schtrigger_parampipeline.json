@@ -1,0 +1,30 @@
+{
+	"name": "schtrigger_parampipeline",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "demopipeline2",
+					"type": "PipelineReference"
+				},
+				"parameters": {
+					"sourcetable": "Table1",
+					"dbnamefrompipeline": "testdb",
+					"destinationtable": "Table2"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Minute",
+				"interval": 15,
+				"startTime": "2023-08-09T09:56:00Z",
+				"endTime": "2023-08-10T09:56:00Z",
+				"timeZone": "UTC"
+			}
+		}
+	}
+}

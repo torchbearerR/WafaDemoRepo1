@@ -1,0 +1,25 @@
+{
+	"name": "Scheduledemotrigger",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "pipeline1",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Day",
+				"interval": 1,
+				"startTime": "2023-08-08T10:06:00Z",
+				"endTime": "2023-08-10T10:06:00Z",
+				"timeZone": "UTC"
+			}
+		}
+	}
+}

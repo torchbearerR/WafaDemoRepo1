@@ -1,0 +1,53 @@
+{
+	"name": "Filterpayrollemployees",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DelimitedText3",
+						"type": "DatasetReference"
+					},
+					"name": "Employees"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DelimitedText2",
+						"type": "DatasetReference"
+					},
+					"name": "payrollemployeessink"
+				}
+			],
+			"transformations": [
+				{
+					"name": "filterpayrolldept"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          empid as string,",
+				"          name as string,",
+				"          country as string,",
+				"          {department } as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> Employees",
+				"Employees filter(equals({department },'3')) ~> filterpayrolldept",
+				"filterpayrolldept sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          deptid as string,",
+				"          { depname} as string",
+				"     ),",
+				"     partitionFileNames:['PayrollEmp.csv'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> payrollemployeessink"
+			]
+		}
+	}
+}

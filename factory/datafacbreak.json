@@ -1,0 +1,9 @@
+{
+	"name": "datafacbreak",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "0d9760b4-e75f-4c1f-b469-24893ed99604",
+		"tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47"
+	}
+}

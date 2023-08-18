@@ -1,0 +1,36 @@
+{
+	"name": "tumblingdependencyselftrigger1",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipeline": {
+			"pipelineReference": {
+				"referenceName": "pipeline1",
+				"type": "PipelineReference"
+			}
+		},
+		"type": "TumblingWindowTrigger",
+		"typeProperties": {
+			"frequency": "Hour",
+			"interval": 1,
+			"startTime": "2023-08-08T11:09:00Z",
+			"endTime": "2023-08-09T11:09:00Z",
+			"delay": "00:00:00",
+			"maxConcurrency": 50,
+			"retryPolicy": {
+				"intervalInSeconds": 30
+			},
+			"dependsOn": [
+				{
+					"type": "TumblingWindowTriggerDependencyReference",
+					"size": "0.00:00:00",
+					"offset": "-0.00:11:00",
+					"referenceTrigger": {
+						"referenceName": "Tumblingwindowdemotrigger",
+						"type": "TriggerReference"
+					}
+				}
+			]
+		}
+	}
+}

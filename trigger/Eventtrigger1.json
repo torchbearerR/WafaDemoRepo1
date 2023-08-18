@@ -1,0 +1,25 @@
+{
+	"name": "Eventtrigger1",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Stopped",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "pipeline1",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "BlobEventsTrigger",
+		"typeProperties": {
+			"blobPathBeginsWith": "/stracccontainer/blobs/inputfolder/",
+			"blobPathEndsWith": ".csv",
+			"ignoreEmptyBlobs": true,
+			"scope": "/subscriptions/e9e06453-b50e-49ad-9059-26fc9c01b7ba/resourceGroups/pestrresgrp/providers/Microsoft.Storage/storageAccounts/straccbreakpractice",
+			"events": [
+				"Microsoft.Storage.BlobCreated"
+			]
+		}
+	}
+}
