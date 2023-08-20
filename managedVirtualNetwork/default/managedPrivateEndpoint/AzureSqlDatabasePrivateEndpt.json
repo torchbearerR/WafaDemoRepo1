@@ -1,0 +1,7 @@
+{
+	"name": "AzureSqlDatabasePrivateEndpt",
+	"properties": {
+		"privateLinkResourceId": "/subscriptions/e9e06453-b50e-49ad-9059-26fc9c01b7ba/resourceGroups/AzureRG/providers/Microsoft.Sql/servers/sqldbtarget",
+		"groupId": "sqlServer"
+	}
+}
